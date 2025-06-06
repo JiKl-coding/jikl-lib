@@ -12,6 +12,8 @@ Do `package.json`:
 "@jikl/lib": "git+https://github.com/JiKl-coding/jikl-lib.git#v0.2.0"
 ```
 
+instaluj npm install git+https://github.com/JiKl-coding/jikl-lib.git
+
 - `v0.2.0` je tag – doporučeno používat verzi, ne `main`.
 
 Instalace:
