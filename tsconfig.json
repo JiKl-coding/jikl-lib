@@ -1,14 +1,18 @@
 {
   "compilerOptions": {
     "target": "ES6",
-    "module": "ESNext",
+    "module": "CommonJS", // ✅ Pro CLI nástroje funguje nejlépe CommonJS
     "declaration": true,
     "outDir": "dist",
     "jsx": "react-jsx",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "strict": true,
-    "baseUrl": "./src"
+    "baseUrl": "./src",
+    "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "types": ["node"]
   },
   "include": ["src"]
 }

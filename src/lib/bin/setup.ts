@@ -1,4 +1,5 @@
-// npx tsx setup.ts
+// npm install git+https://github.com/JiKl-coding/jikl-lib.git
+// npx @jikl/lib setup
 
 import fs from "fs";
 import path from "path";
