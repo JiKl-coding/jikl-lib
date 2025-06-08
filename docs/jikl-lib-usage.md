@@ -54,6 +54,7 @@ npm link
 npm link @jikl/lib
 npm install @jikl/lib
 případně npm install @jikl/lib --force (update)
+je třeba doplnit do jsonu verzi, kteoru chci instalovat
 ```
 
 ---
