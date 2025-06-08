@@ -6,7 +6,7 @@ Tato knihovna není publikována na npm registry. Používá se přímo přes Gi
 
 ## ✅ Instalace
 
-Do `package.json - devDependencies`:
+Do `package.json - dependencies`:
 
 ```
 "@jikl/lib": "github:JiKl-coding/jikl-lib"
