@@ -52,6 +52,8 @@ npm link
 
 # V jiném projektu:
 npm link @jikl/lib
+npm install @jikl/lib
+případně npm install @jikl/lib --force (update)
 ```
 
 ---
