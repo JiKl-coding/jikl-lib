@@ -1,7 +1,7 @@
 // lib/analytics/gtag.ts
 
 type GtagFunction = (
-  command: "config" | "set" | "js" | "event",
+  command: "config" | "set" | "js" | "event" | "consent",
   targetIdOrParams: string | Record<string, unknown>,
   config?: Record<string, unknown>
 ) => void;
@@ -48,5 +48,12 @@ export function initGtag(
   };
 
   w.gtag("js", new Date().toString());
+
+  // GDPR default: nedovolujeme nic bez souhlasu
+  w.gtag("consent", "default", {
+    ad_storage: "denied",
+    analytics_storage: "denied",
+  });
+
   w.gtag("config", trackingId);
 }
