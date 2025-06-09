@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { initGtag } from "../../../lib/analytics/gtag";
+import { initGtagLoader, enableAnalytics } from "../../../lib/analytics/gtag";
 
 const COOKIE_KEY = "cookie_consent";
 
@@ -9,9 +9,11 @@ export function useCookieConsentClient(gtagId: string) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    initGtagLoader(gtagId);
+
     const consent = localStorage.getItem(COOKIE_KEY);
     if (consent === "true") {
-      initGtag(gtagId);
+      enableAnalytics(gtagId);
     } else {
       setIsVisible(true);
     }
@@ -20,12 +22,7 @@ export function useCookieConsentClient(gtagId: string) {
   const accept = () => {
     localStorage.setItem(COOKIE_KEY, "true");
     setIsVisible(false);
-
-    initGtag(gtagId);
-    window.gtag?.("consent", "update", {
-      ad_storage: "granted",
-      analytics_storage: "granted",
-    });
+    enableAnalytics(gtagId);
   };
 
   const deny = () => {

@@ -1,59 +1,49 @@
-// lib/analytics/gtag.ts
-
 type GtagFunction = (
   command: "config" | "set" | "js" | "event" | "consent",
   targetIdOrParams: string | Record<string, unknown>,
   config?: Record<string, unknown>
 ) => void;
 
-/**
- * Inicializuje Google Analytics pomocí gtag.js
- * @param trackingId - měřicí ID (např. "G-XXXXXXXXXX")
- * @param options - možnost zapnout konzolové warningy
- */
-export function initGtag(
-  trackingId: string,
-  options: { verbose?: boolean } = {}
-) {
-  if (typeof window === "undefined") return;
-
-  const w = window as typeof window & {
+declare global {
+  interface Window {
     dataLayer?: unknown[];
     gtag?: GtagFunction;
     __gtag_initialized__?: boolean;
-  };
-
-  if (!trackingId) {
-    if (options.verbose) {
-      console.warn(
-        "%c[GA] Google Analytics není aktivní – chybí GA ID",
-        "color: orange; font-weight: bold;"
-      );
-    }
-    return;
   }
+}
 
-  if (w.__gtag_initialized__) return;
-  w.__gtag_initialized__ = true;
+export function initGtagLoader(trackingId: string) {
+  if (typeof window === "undefined") return;
 
-  const script = document.createElement("script");
-  script.src = `https://www.googletagmanager.com/gtag/js?id=${trackingId}`;
-  script.async = true;
-  document.head.appendChild(script);
+  const w = window;
 
-  w.dataLayer = w.dataLayer || [];
+  if (!w.gtag) {
+    const script = document.createElement("script");
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${trackingId}`;
+    script.async = true;
+    document.head.appendChild(script);
 
-  w.gtag = (...args) => {
-    w.dataLayer!.push(args);
-  };
+    w.dataLayer = w.dataLayer || [];
+    w.gtag = (...args) => {
+      w.dataLayer!.push(args);
+    };
+  }
 
   w.gtag("js", new Date().toString());
 
-  // GDPR default: nedovolujeme nic bez souhlasu
   w.gtag("consent", "default", {
     ad_storage: "denied",
     analytics_storage: "denied",
   });
+}
 
-  w.gtag("config", trackingId);
+export function enableAnalytics(trackingId: string) {
+  if (typeof window === "undefined") return;
+
+  window.gtag?.("consent", "update", {
+    ad_storage: "granted",
+    analytics_storage: "granted",
+  });
+
+  window.gtag?.("config", trackingId);
 }

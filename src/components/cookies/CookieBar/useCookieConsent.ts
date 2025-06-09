@@ -2,7 +2,6 @@ import { useCookieConsentClient } from "./useCookieConsentClient";
 
 const COOKIE_KEY = "cookie_consent";
 
-// 💡 Tady definuješ přesný návratový typ
 type CookieConsentHook = {
   isVisible: boolean;
   accept: () => void;
