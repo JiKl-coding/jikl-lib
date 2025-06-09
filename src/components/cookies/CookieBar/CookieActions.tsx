@@ -1,16 +1,36 @@
 interface Props {
   onAccept: () => void;
-  className?: string;
-  label?: string;
+  onDeny: () => void;
+  wrapperClassName?: string;
+  acceptLabel?: string;
+  denyLabel?: string;
+  acceptButtonClassName?: string;
+  denyButtonClassName?: string;
 }
 
-export function CookieActions({ onAccept, className, label = "Přijmout" }: Props) {
+export function CookieActions({
+  onAccept,
+  onDeny,
+  wrapperClassName,
+  acceptLabel,
+  denyLabel,
+  acceptButtonClassName,
+  denyButtonClassName,
+}: Props) {
   return (
-    <button
-      onClick={onAccept}
-      className={`ml-4 px-4 py-2 rounded text-sm hover:bg-gray-800 cursor-pointer ${className ?? ""}`}
-    >
-      {label}
-    </button>
+    <div className={`flex justify-center items-center flex-wrap ${wrapperClassName ?? ""}`}>
+      <button
+        onClick={onAccept}
+        className={`cursor-pointer ${acceptButtonClassName ?? ""}`}
+      >
+        {acceptLabel}
+      </button>
+      <button
+        onClick={onDeny}
+        className={`cursor-pointer ${denyButtonClassName ?? ""}`}
+      >
+        {denyLabel}
+      </button>
+    </div>
   );
 }

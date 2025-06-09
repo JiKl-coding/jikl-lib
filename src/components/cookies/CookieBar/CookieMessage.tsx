@@ -7,5 +7,5 @@ export function CookieMessage({
   className,
   messageText = "Používáme cookies pro analýzu návštěvnosti (Google Analytics).",
 }: CookieMessageProps) {
-  return <p className={`text-sm ${className ?? ""}`}>{messageText}</p>;
+  return <p className={className}>{messageText}</p>;
 }
