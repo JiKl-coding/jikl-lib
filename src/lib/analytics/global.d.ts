@@ -1,9 +1,14 @@
-type GtagFn = (...args: [string, string, Record<string, unknown>?]) => void;
+type GtagFunction = (
+  command: "config" | "set" | "js" | "event" | "consent",
+  targetIdOrParams: string | Record<string, unknown>,
+  config?: Record<string, unknown>
+) => void;
 
 declare global {
   interface Window {
-    gtag?: GtagFn;
     dataLayer?: unknown[];
+    gtag?: GtagFunction;
+    __gtag_initialized__?: boolean;
   }
 }
 

@@ -13,37 +13,35 @@ declare global {
 }
 
 export function initGtagLoader(trackingId: string) {
-  if (typeof window === "undefined") return;
+  if (typeof window === "undefined" || window.__gtag_initialized__) return;
 
-  const w = window;
+  const script = document.createElement("script");
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${trackingId}`;
+  script.async = true;
+  document.head.appendChild(script);
 
-  if (!w.gtag) {
-    const script = document.createElement("script");
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${trackingId}`;
-    script.async = true;
-    document.head.appendChild(script);
-
-    w.dataLayer = w.dataLayer || [];
-    w.gtag = (...args) => {
-      w.dataLayer!.push(args);
-    };
-  }
-
-  w.gtag("js", new Date().toString());
-
-  w.gtag("consent", "default", {
-    ad_storage: "denied",
-    analytics_storage: "denied",
-  });
+  window.__gtag_initialized__ = true;
 }
 
-export function enableAnalytics(trackingId: string) {
-  if (typeof window === "undefined") return;
 
-  window.gtag?.("consent", "update", {
+export function enableAnalytics(trackingId: string) {
+  if (typeof window === "undefined" || !window.gtag) return;
+
+  // 1. Povolit consent
+  window.gtag("consent", "update", {
     ad_storage: "granted",
     analytics_storage: "granted",
   });
 
-  window.gtag?.("config", trackingId);
+  // 2. Developer mód pro jistotu viditelnosti v debug režimech
+window.gtag("set", {
+  "developer_id.dZTNiMT": true,
+});
+
+  // 3. Aktivuj config (včetně automatického page_view)
+  window.gtag("config", trackingId, {
+    debug_mode: true,
+    send_page_view: true,
+    traffic_type: "external",
+  });
 }

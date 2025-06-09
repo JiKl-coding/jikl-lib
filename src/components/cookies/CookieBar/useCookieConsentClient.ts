@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { initGtagLoader, enableAnalytics } from "../../../lib/analytics/gtag";
+import { initGtagLoader, enableAnalytics } from "../../../lib//analytics/gtag";
 
 const COOKIE_KEY = "cookie_consent";
 
@@ -9,6 +9,8 @@ export function useCookieConsentClient(gtagId: string) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    if (!gtagId) return;
+
     initGtagLoader(gtagId);
 
     const consent = localStorage.getItem(COOKIE_KEY);
