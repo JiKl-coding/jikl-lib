@@ -12,6 +12,13 @@ export interface MetadataOptions {
   creator?: string;
   publisher?: string;
   authors?: { name: string; url?: string }[];
+  themeColor?: string;
+  languageAlternates?: { href: string; hrefLang: string }[];
+  appleWebApp?: {
+    title?: string;
+    statusBarStyle?: "default" | "black" | "black-translucent";
+    capable?: boolean;
+  };
 }
 
 export function generateMetadata({
@@ -26,6 +33,9 @@ export function generateMetadata({
   creator,
   publisher,
   authors,
+  themeColor,
+  languageAlternates,
+  appleWebApp,
 }: MetadataOptions): Metadata {
   const normalizedServerUrl = serverUrl.replace(/\/$/, "");
   const fullPath = path.startsWith("/") ? path : `/${path}`;
@@ -67,12 +77,25 @@ export function generateMetadata({
     metadataBase: new URL(normalizedServerUrl),
     alternates: {
       canonical: fullUrl,
+      languages: languageAlternates?.reduce<Record<string, string>>((acc, alt) => {
+        acc[alt.hrefLang] = alt.href;
+        return acc;
+      }, {}),
     },
   };
 
   if (creator) metadata.creator = creator;
   if (publisher) metadata.publisher = publisher;
   if (authors) metadata.authors = authors;
+  if (themeColor) metadata.themeColor = themeColor;
+
+  if (appleWebApp) {
+    metadata.appleWebApp = {
+      capable: appleWebApp.capable ?? true,
+      title: appleWebApp.title || appName,
+      statusBarStyle: appleWebApp.statusBarStyle || "default",
+    };
+  }
 
   return metadata;
 }
