@@ -9,6 +9,9 @@ export interface MetadataOptions {
   ogImage?: string;
   keywords?: string[];
   locale?: string;
+  creator?: string;
+  publisher?: string;
+  authors?: { name: string; url?: string }[];
 }
 
 export function generateMetadata({
@@ -20,6 +23,9 @@ export function generateMetadata({
   ogImage,
   keywords = [],
   locale = "cs_CZ",
+  creator,
+  publisher,
+  authors,
 }: MetadataOptions): Metadata {
   const normalizedServerUrl = serverUrl.replace(/\/$/, "");
   const fullPath = path.startsWith("/") ? path : `/${path}`;
@@ -31,7 +37,7 @@ export function generateMetadata({
 
   const fullTitle = `${title} | ${appName}`;
 
-  return {
+  const metadata: Metadata = {
     title: fullTitle,
     description,
     keywords: Array.from(new Set([...keywords, appName.toLowerCase()])),
@@ -59,4 +65,10 @@ export function generateMetadata({
     },
     robots: "index, follow",
   };
+
+  if (creator) metadata.creator = creator;
+  if (publisher) metadata.publisher = publisher;
+  if (authors) metadata.authors = authors;
+
+  return metadata;
 }
