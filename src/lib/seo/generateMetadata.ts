@@ -64,6 +64,10 @@ export function generateMetadata({
       images: [resolvedOgImage],
     },
     robots: "index, follow",
+    metadataBase: new URL(normalizedServerUrl),
+    alternates: {
+      canonical: fullUrl,
+    },
   };
 
   if (creator) metadata.creator = creator;
